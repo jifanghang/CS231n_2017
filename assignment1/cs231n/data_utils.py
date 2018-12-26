@@ -33,6 +33,7 @@ def load_CIFAR10(ROOT):
     X, Y = load_CIFAR_batch(f)
     xs.append(X)
     ys.append(Y)    
+  # np.concatenate(): merge two arrays
   Xtr = np.concatenate(xs)
   Ytr = np.concatenate(ys)
   del X, Y
