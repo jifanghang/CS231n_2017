@@ -71,9 +71,6 @@ class KNearestNeighbor(object):
         dist = np.sum(dist_mat)
         dists[i, j] = dist
         pass
-        #####################################################################
-        #                       END OF YOUR CODE                            #
-        #####################################################################
     return dists
 
   def compute_distances_one_loop(self, X):
@@ -145,25 +142,34 @@ class KNearestNeighbor(object):
       # A list of length k storing the labels of the k nearest neighbors to
       # the ith test point.
       closest_y = []
-      #########################################################################
-      # TODO:                                                                 #
-      # Use the distance matrix to find the k nearest neighbors of the ith    #
-      # testing point, and use self.y_train to find the labels of these       #
-      # neighbors. Store these labels in closest_y.                           #
-      # Hint: Look up the function numpy.argsort.                             #
-      #########################################################################
+      # find the k nearest neighbors of the ith testing point
+      # Hint: numpy.argsort
+      neighbors_idx_sorted = dists[i].argsort()
+      for j in xrange(k):
+        closest_y.append(self.y_train[neighbors_idx_sorted[j]])
       pass
-      #########################################################################
-      # TODO:                                                                 #
-      # Now that you have found the labels of the k nearest neighbors, you    #
-      # need to find the most common label in the list closest_y of labels.   #
-      # Store this label in y_pred[i]. Break ties by choosing the smaller     #
-      # label.                                                                #
-      #########################################################################
+
+      # TODO: find the most common label in the list closest_y of labels.
+      # Store this label in y_pred[i]
+      # Break ties by choosing the smaller label
+
+      # create a dict storing appearences for each label
+      appearences = {}
+      for j in closest_y:
+        appearences[j] = 0
+      for j in closest_y:
+        appearences[j] += 1
+
+      result = appearences[closest_y[0]]
+      _count = 0
+      for label, count in appearences.items():
+        if count > _count:
+          _count = count
+          result = label
+
+      y_pred[i] = result
+
       pass
-      #########################################################################
-      #                           END OF YOUR CODE                            # 
-      #########################################################################
 
     return y_pred
 
