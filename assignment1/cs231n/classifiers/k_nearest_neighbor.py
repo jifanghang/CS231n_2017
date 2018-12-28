@@ -67,10 +67,13 @@ class KNearestNeighbor(object):
     dists = np.zeros((num_test, num_train))
     for i in xrange(num_test):
       for j in xrange(num_train):
-        dist_mat = np.absolute(np.subtract(X[i], self.X_train[j]))
-        dist = np.sum(dist_mat)
+        dist_mat = np.square(np.subtract(X[i], self.X_train[j]))
+        dist = np.sqrt(np.sum(dist_mat))
         dists[i, j] = dist
         pass
+        #####################################################################
+        #                       END OF YOUR CODE                            #
+        #####################################################################
     return dists
 
   def compute_distances_one_loop(self, X):
@@ -84,11 +87,8 @@ class KNearestNeighbor(object):
     num_train = self.X_train.shape[0]
     dists = np.zeros((num_test, num_train))
     for i in xrange(num_test):
-      #######################################################################
-      # TODO:                                                               #
-      # Compute the l2 distance between the ith test point and all training #
-      # points, and store the result in dists[i, :].                        #
-      #######################################################################
+      distances = np.sqrt(np.sum(np.square(self.X_train - X[i,:]), axis = 1))
+      dists[i, :] = distances
       pass
       #######################################################################
       #                         END OF YOUR CODE                            #
@@ -148,7 +148,6 @@ class KNearestNeighbor(object):
       for j in xrange(k):
         closest_y.append(self.y_train[neighbors_idx_sorted[j]])
       pass
-
       # TODO: find the most common label in the list closest_y of labels.
       # Store this label in y_pred[i]
       # Break ties by choosing the smaller label
@@ -170,6 +169,9 @@ class KNearestNeighbor(object):
       y_pred[i] = result
 
       pass
+      #########################################################################
+      #                           END OF YOUR CODE                            # 
+      #########################################################################
 
     return y_pred
 
