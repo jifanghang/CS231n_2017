@@ -1,5 +1,6 @@
 import numpy as np
 from past.builtins import xrange
+from collections import Counter
 
 
 class KNearestNeighbor(object):
@@ -148,29 +149,34 @@ class KNearestNeighbor(object):
       closest_y = []
       # find the k nearest neighbors of the ith testing point
       # Hint: numpy.argsort
-      neighbors_idx_sorted = dists[i].argsort()
-      for j in xrange(k):
-        closest_y.append(self.y_train[neighbors_idx_sorted[j]])
+      # neighbors_idx_sorted = dists[i].argsort()
+      # for j in xrange(k):
+      #   closest_y.append(self.y_train[neighbors_idx_sorted[j]])
+      labels = self.y_train[np.argsort(dists[i,:])].flatten()
+      # print labels.shape
+      closest_y = labels[0:k]
       pass
       # TODO: find the most common label in the list closest_y of labels.
       # Store this label in y_pred[i]
       # Break ties by choosing the smaller label
 
       # create a dict storing appearences for each label
-      appearences = {}
-      for j in closest_y:
-        appearences[j] = 0
-      for j in closest_y:
-        appearences[j] += 1
+      # appearences = dict()
+      # for j in closest_y:
+      #   appearences[j] = 0
+      # for j in closest_y:
+      #   appearences[j] += 1
 
-      result = appearences[closest_y[0]]
-      _count = 0
-      for label, count in appearences.items():
-        if count > _count:
-          _count = count
-          result = label
+      # result = appearences[closest_y[0]]
+      # _count = 0
+      # for label, count in appearences.items():
+      #   if count > _count:
+      #     _count = count
+      #     result = label
 
-      y_pred[i] = result
+      # y_pred[i] = result
+      c = Counter(closest_y)
+      y_pred[i] = c.most_common(1)[0][0]
 
       pass
       #########################################################################
